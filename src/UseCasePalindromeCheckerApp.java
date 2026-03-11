@@ -1,20 +1,35 @@
+import java.util.*;
+
 public class UseCasePalindromeCheckerApp {
     public static void main(String[] args) {
-        String input = "madam";
-        boolean isPalindrome = true;
 
-        for (int i = 0; i < input.length() / 2; i++) {
-            if (input.charAt(i) != input.charAt(input.length() - 1 - i)) {
+        Scanner S = new Scanner(System.in);
+        System.out.print("enter the String");
+        String input = S.nextLine();
+
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : input.toCharArray()){
+            stack.push(c);
+        }
+
+        boolean isPalindrome=true;
+        for (char c : input.toCharArray()){
+            char popped = stack.pop();
+
+            if(c != popped){
                 isPalindrome = false;
                 break;
             }
         }
 
-        System.out.println("Input String: " + input);
-        if (isPalindrome) {
-            System.out.println("Result: The string is a palindrome.");
-        } else {
-            System.out.println("Result: The string is NOT a palindrome.");
+        if(isPalindrome){
+            System.out.println("Is Palindrome?: True");
         }
+        else{
+            System.out.println("Is Palindrome?: False");
+        }
+
+        S.close();
     }
 }
