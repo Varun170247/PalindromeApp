@@ -1,40 +1,78 @@
 import java.util.*;
 
 public class UseCasePalindromeCheckerApp {
+
     public static void main(String[] args) {
 
         Scanner S = new Scanner(System.in);
-        System.out.print("enter the String");
+        System.out.print("Input : ");
         String input = S.nextLine();
 
-        Deque<Character> deque = new ArrayDeque<>();
+        long start, end;
 
-        for (char c : input.toCharArray()){
-            deque.add(c);
-        }
+        start = System.nanoTime();
+        boolean result1 = twoPointerCheck(input);
+        end = System.nanoTime();
+        long time1 = end - start;
+
+        start = System.nanoTime();
+        boolean result2 = stackCheck(input);
+        end = System.nanoTime();
+        long time2 = end - start;
+
+        start = System.nanoTime();
+        boolean result3 = recursiveCheck(input, 0, input.length() - 1);
+        end = System.nanoTime();
+        long time3 = end - start;
+
+        System.out.println("Two Pointer Result : " + result1);
+        System.out.println("Execution Time (ns) : " + time1);
+
+        System.out.println("Stack Result : " + result2);
+        System.out.println("Execution Time (ns) : " + time2);
+
+        System.out.println("Recursive Result : " + result3);
+        System.out.println("Execution Time (ns) : " + time3);
+
+        S.close();
+    }
+
+    private static boolean twoPointerCheck(String input) {
+
         int start = 0;
-        int end = deque.size() -1;
+        int end = input.length() - 1;
 
-
-        boolean isPalindrome=true;
-        while (deque.size()>1){
-            char front= deque.removeFirst();
-            char last = deque.removeLast();
-            if (front != last){
-                isPalindrome = false;
-                break;
-            }
+        while (start < end) {
+            if (input.charAt(start) != input.charAt(end))
+                return false;
             start++;
             end--;
         }
+        return true;
+    }
 
-        if(isPalindrome){
-            System.out.println("Is Palindrome?: True");
-        }
-        else{
-            System.out.println("Is Palindrome?: False");
-        }
+    private static boolean stackCheck(String input) {
 
-        S.close();
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : input.toCharArray())
+            stack.push(c);
+
+        for (char c : input.toCharArray())
+            if (c != stack.pop())
+                return false;
+
+        return true;
+    }
+
+    private static boolean recursiveCheck(String input, int start, int end) {
+
+        if (start >= end)
+            return true;
+
+        if (input.charAt(start) != input.charAt(end))
+            return false;
+
+        return recursiveCheck(input, start + 1, end - 1);
     }
 }
